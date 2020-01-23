@@ -1,2 +1,0 @@
-# FavoriteReposReactHooks
-Created with CodeSandbox
