@@ -85,7 +85,7 @@ function Main() {
       <Form onSubmit={handleSubmit} error={alert}>
         <input
           type="text"
-          autofocus
+          autoFocus
           placeholder="Adicionar Repositórios  Ex.facebook/react"
           value={newRepo}
           onChange={handreInputChange}

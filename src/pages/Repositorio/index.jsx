@@ -3,12 +3,21 @@ import { FaArrowLeft } from "react-icons/fa";
 
 import api from "../../services/api";
 
-import { Container, Owner, Loading, BackButton, IssuesList } from "./styles";
+import {
+  Container,
+  Owner,
+  Loading,
+  BackButton,
+  IssuesList,
+  Actions
+} from "./styles";
 
 function Repositorio({ match }) {
+  //States
   const [repositorio, setRepositorio] = useState({});
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     async function load() {
@@ -31,6 +40,27 @@ function Repositorio({ match }) {
 
     load();
   }, [match.params.repositorio]);
+
+  useEffect(() => {
+    async function loadIssue() {
+      const nomeRepo = decodeURIComponent(match.params.repositorio);
+
+      const response = await api.get(`/repos/${nomeRepo}/issues`, {
+        params: {
+          state: "open",
+          page,
+          per_page: 5
+        }
+      });
+      setIssues(response.data);
+    }
+    loadIssue();
+  }, [match.params.repositorio, page]);
+
+  function handlePage(action) {
+    if (action === "back" && page === 1) return;
+    setPage(action === "back" ? page - 1 : page + 1);
+  }
 
   if (loading) {
     return (
@@ -73,6 +103,19 @@ function Repositorio({ match }) {
           </li>
         ))}
       </IssuesList>
+      <Actions>
+        <button
+          type="button"
+          onClick={() => handlePage("back")}
+          disabled={page < 2}
+        >
+          Anterior
+        </button>
+        <span>{page}</span>
+        <button type="button" onClick={() => handlePage("next")}>
+          Proxima
+        </button>
+      </Actions>
     </Container>
   );
 }
