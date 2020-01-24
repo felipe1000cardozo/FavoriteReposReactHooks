@@ -3,7 +3,7 @@ import { FaArrowLeft } from "react-icons/fa";
 
 import api from "../../services/api";
 
-import { Container, Owner, Loading, BackButton } from "./styles";
+import { Container, Owner, Loading, BackButton, IssuesList } from "./styles";
 
 function Repositorio({ match }) {
   const [repositorio, setRepositorio] = useState({});
@@ -45,14 +45,34 @@ function Repositorio({ match }) {
       <BackButton to="/">
         <FaArrowLeft color="#FFF" size={20} />
       </BackButton>
+
       <Owner>
         <img
           src={repositorio.owner.avatar_url}
           alt={`Foto perfil de ${repositorio.owner.login}`}
         />
         <h1>{repositorio.name}</h1>
-        <p>{repositorio.description}</p>
+        <p>{repositorio.description} </p>
       </Owner>
+
+      <IssuesList>
+        {issues.map(issues => (
+          <li key={issues.id}>
+            <img src={issues.user.avatar_url} alt={issues.user.login} />
+
+            <div>
+              <strong>
+                <a href={issues.html_url}>{issues.title}</a>
+
+                {issues.labels.map(label => (
+                  <span key={label.id}>{label.name}</span>
+                ))}
+              </strong>
+              <p>{issues.user.login}</p>
+            </div>
+          </li>
+        ))}
+      </IssuesList>
     </Container>
   );
 }
