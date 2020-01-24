@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
 
 import api from "../../services/api";
 
-import { Container } from "./styles";
+import { Container, Owner, Loading, BackButton } from "./styles";
 
 function Repositorio({ match }) {
+  const [repositorio, setRepositorio] = useState({});
+  const [issues, setIssues] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function load() {
       const nomeRepo = decodeURIComponent(match.params.repositorio);
@@ -19,16 +24,35 @@ function Repositorio({ match }) {
         })
       ]);
 
-      console.log(repositorioData.data);
-      console.log(issuesData.data);
+      setRepositorio(repositorioData.data);
+      setIssues(issuesData.data);
+      setLoading(false);
     }
 
     load();
-  }, []);
+  }, [match.params.repositorio]);
+
+  if (loading) {
+    return (
+      <Loading>
+        <h1>Carregando...</h1>
+      </Loading>
+    );
+  }
 
   return (
     <Container>
-      <h1>Repositorio</h1>
+      <BackButton to="/">
+        <FaArrowLeft color="#FFF" size={20} />
+      </BackButton>
+      <Owner>
+        <img
+          src={repositorio.owner.avatar_url}
+          alt={`Foto perfil de ${repositorio.owner.login}`}
+        />
+        <h1>{repositorio.name}</h1>
+        <p>{repositorio.description}</p>
+      </Owner>
     </Container>
   );
 }
