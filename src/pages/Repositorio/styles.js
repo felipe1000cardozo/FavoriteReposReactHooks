@@ -130,7 +130,7 @@ export const Actions = styled.nav`
     padding: 5px 10px;
     border-radius: 4px;
     margin: 0 5px;
-    transition: opacity 0.4s;
+    transition: opacity 0.3s;
     :hover {
       opacity: 0.9;
     }
