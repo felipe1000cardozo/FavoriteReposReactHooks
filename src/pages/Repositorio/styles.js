@@ -112,6 +112,7 @@ export const IssuesList = styled.ul`
         padding: 4px 7px;
         display: inline-block;
         margin: 10px 10px 10px 0;
+        }
       }
     }
   }
